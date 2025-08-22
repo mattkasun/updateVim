@@ -19,7 +19,7 @@ func main() {
 	}
 }
 
-func getStartDir(path string, d fs.DirEntry, err error) error {
+func getStartDir(path string, _ fs.DirEntry, err error) error {
 	if err != nil {
 		return err
 	}
@@ -32,33 +32,33 @@ func getStartDir(path string, d fs.DirEntry, err error) error {
 func gitPull(path string) error {
 	dirs, err := os.ReadDir(path)
 	if err != nil {
-		return err
+		return fmt.Errorf("read dir %w", err)
 	}
 	for _, dir := range dirs {
 		if !dir.IsDir() {
 			continue
 		}
 		if err := os.Chdir(path + "/" + dir.Name()); err != nil {
-			return (err)
+			return fmt.Errorf("chdir %w", err)
 		}
 		repo, err := git.PlainOpen(path + "/" + dir.Name())
 		if err != nil {
-			return (err)
+			return fmt.Errorf("git open %w", err)
 		}
 		workTree, err := repo.Worktree()
 		if err != nil {
-			return (err)
+			return fmt.Errorf("worktree %w", err)
 		}
 		pubKey, err := ssh.NewPublicKeysFromFile("git", os.Getenv("HOME")+"/.ssh/id_ed25519", "")
 		if err != nil {
-			return (err)
+			return fmt.Errorf("public key %w", err)
 		}
 		if err := workTree.Pull(&git.PullOptions{RemoteName: "origin", Auth: pubKey}); err != nil {
 			if errors.Is(err, git.NoErrAlreadyUpToDate) {
 				fmt.Println(path+"/"+dir.Name(), "\t", err)
 				continue
 			}
-			return err
+			return fmt.Errorf("pull %w", err)
 		}
 		fmt.Println(path+"/"+dir.Name(), "\t", "updated")
 	}

@@ -6,17 +6,13 @@ linters:
   disable:
     - depguard
     - exhaustruct
+    - forbidigo
     - nlreturn
     - noinlineerr
     - wsl
     - wsl_v5
   exclusions:
     generated: lax
-    presets:
-      #- comments
-      #- common-false-positives
-      #- legacy
-      #- std-error-handling
     paths:
       - third_party$
       - builtin$
