@@ -2,7 +2,7 @@ module github.com/mattkasun/vimUpdate
 
 go 1.24.6
 
-require github.com/go-git/go-git/v5 v5.17.0
+require github.com/go-git/go-git/v5 v5.17.1
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
