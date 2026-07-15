@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for start in $(find ~/.vim -name start); do
+for start in $(find ~/.config/vim -name start); do
     for dir in $start/*; do
         echo $dir
         cd $dir
